@@ -14,7 +14,10 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
+import sys
+
+import pkg_resources  # part of setuptools
 
 # If your extensions (or modules documented by autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -48,7 +51,6 @@ copyright = u'2013, MyTardis Development Team'
 # built documents.
 #
 # The short X.Y version.
-import pkg_resources  # part of setuptools
 version = pkg_resources.require("MyTardis")[0].version
 
 # The full version, including alpha/beta/rc tags.
@@ -170,8 +172,8 @@ latex_paper_size = 'a4'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'tardis.tex', ur'MyTardis Documentation',
-   ur'Steve Androulakis', 'manual'),
+  ('index', 'tardis.tex', 'MyTardis Documentation',
+   'Steve Androulakis', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
