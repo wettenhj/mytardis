@@ -4,6 +4,7 @@ readthedocs.org or manually
 """
 
 import os
+import subprocess
 import sys
 
 import django
@@ -42,7 +43,7 @@ copyright = u'2016, MyTardis Development Team'
 # built documents.
 #
 # The short X.Y version.
-import tardis
+import tardis  # pylint: disable=C0413
 version = tardis.__version__
 
 # The full version, including alpha/beta/rc tags.
@@ -88,8 +89,19 @@ pygments_style = 'sphinx'
 # API doc generation
 # ------------------
 
-execfile("generate-api-docs.py")
+cmd = [
+    "sphinx-apidoc",  # command
+    "-o", "pydoc",  # output dir
+    "-f",  # force overwrite
+    "../tardis",
+]
 
+try:
+    subprocess.call(cmd)
+except:
+    print "command failed, trying import"  # command always seems to fail
+    import sphinx.apidoc as apidoc
+    apidoc.main(cmd)
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -142,8 +154,8 @@ latex_paper_size = 'a4'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'tardis.tex', ur'MyTardis Documentation',
-   ur'Steve Androulakis', 'manual'),
+  ('index', 'tardis.tex', 'MyTardis Documentation',
+   'Steve Androulakis', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
