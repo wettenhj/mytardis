@@ -1,4 +1,4 @@
-# pylint: disable=redundant-returns-doc,missing-returns-doc,missing-raises-doc,missing-return-type-doc
+# pylint: disable=redundant-returns-doc,missing-raises-doc
 import oaipmh.error
 import oaipmh.interfaces
 
@@ -81,6 +81,7 @@ class BaseProvider(oaipmh.interfaces.IOAI, object):
 
         :returns: an iterable of ``metadataPrefix``, ``schema``,
             ``metadataNamespace`` tuples (each entry in the tuple is a string).
+        :rtype: an iterable, e.g. a list
         """
         return []
 
