@@ -8,6 +8,7 @@ import sys
 from os import path
 import inspect
 import types
+from six import string_types
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
@@ -70,6 +71,11 @@ def site_routed_view(request, _default_view, _site_mappings, *args, **kwargs):
     :type kwargs:
     :return: A view function
     :rtype: types.FunctionType
+
+    :raises ImportError: Re-raises caught exception when
+                         settings.DEBUG is True.
+    :raises AttributeError: Re-raises caught exception when
+                            settings.DEBUG is True.
     """
     view = None
     if _site_mappings:
@@ -87,7 +93,7 @@ def site_routed_view(request, _default_view, _site_mappings, *args, **kwargs):
                          'view as fallback. view name: %s, error-msg: %s'
                          % (repr(view), e))
             if settings.DEBUG:
-                raise e
+                raise
     view_fn = _resolve_view(_default_view)
     return view_fn(request, *args, **kwargs)
 
@@ -203,6 +209,11 @@ class DatasetView(TemplateView):
         :type dataset:
         :return:
         :rtype:
+
+        :raises ImportError: Re-raises caught exception when
+                             settings.DEBUG is True.
+        :raises AttributeError: Re-raises caught exception when
+                                settings.DEBUG is True.
         """
         if hasattr(settings, "DATASET_VIEWS"):
             namespaces = [ps.schema.namespace
@@ -219,7 +230,7 @@ class DatasetView(TemplateView):
                             'custom view import failed. view name: %s, '
                             'error-msg: %s' % (repr(view_fn), e))
                         if settings.DEBUG:
-                            raise e
+                            raise
         return None
 
     def get_context_data(self, request, dataset, **kwargs):
@@ -409,7 +420,7 @@ def _resolve_view(view_function_or_string):
     :rtype: types.FunctionType
     :raises TypeError:
     """
-    if isinstance(view_function_or_string, basestring):
+    if isinstance(view_function_or_string, string_types):
         x = view_function_or_string.split('.')
         obj_path, obj_name = ('.'.join(x[:-1]), x[-1])
         module = __import__(obj_path, fromlist=[obj_name])
@@ -450,7 +461,7 @@ class ExperimentView(TemplateView):
                             'custom view import failed. view name: %s, '
                             'error-msg: %s' % (repr(view_fn), e))
                         if settings.DEBUG:
-                            raise e
+                            raise
         return None
 
     def get_context_data(self, request, experiment, **kwargs):
