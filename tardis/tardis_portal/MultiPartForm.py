@@ -3,10 +3,11 @@
 
 import logging
 import itertools
-import mimetools
 import mimetypes
 from cStringIO import StringIO
 import urllib2
+
+import mimetools
 
 
 logger = logging.getLogger(__name__)
