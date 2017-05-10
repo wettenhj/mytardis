@@ -1,6 +1,6 @@
-import cgi
 import json
 import re
+from html import escape
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -44,7 +44,7 @@ def render_error_message(request, message, status=400):
     Render a simple text error message in a generic error page.
     Any newlines are turned into <br>.
     """
-    formatted = cgi.escape(message).replace('\n', '<br/>')
+    formatted = escape(message).replace('\n', '<br/>')
     return render(request, 'tardis_portal/user_error.html',
                   {'error_message': formatted}, status=status)
 
