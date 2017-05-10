@@ -387,8 +387,8 @@ def __getSearchDatafileForm(request, searchQueryType):
         SearchDatafileForm = createSearchDatafileForm(searchQueryType)
         form = SearchDatafileForm(request.GET)
         return form
-    except UnsupportedSearchQueryTypeError, e:
-        raise e
+    except UnsupportedSearchQueryTypeError:
+        raise
 
 
 def __getSearchExperimentForm(request):
