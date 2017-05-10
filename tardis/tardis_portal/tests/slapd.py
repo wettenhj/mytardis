@@ -371,7 +371,7 @@ class Slapd:
                 else:
                     raise RuntimeError("bad line: " + repr(line))
                 obj.append((attr, value))
-        assert obj == []
+        self.assertEqual(obj, [])
         return objects
 
     def started(self):
@@ -380,10 +380,11 @@ class Slapd:
         By default, this method adds the two initial objects,
         the domain object and the root user object.
         """
-        assert self.get_dn_suffix().startswith("dc=")
+        self.assertTrue(self.get_dn_suffix().startswith("dc="))
         suffix_dc = self.get_dn_suffix().split(',')[0][3:]
-        assert self.get_root_dn().startswith("cn=")
-        assert self.get_root_dn().endswith("," + self.get_dn_suffix())
+        self.assertTrue(self.get_root_dn().startswith("cn="))
+        self.assertTrue(
+            self.get_root_dn().endswith("," + self.get_dn_suffix()))
         root_cn = self.get_root_dn().split(',')[0][3:]
 
         self._log.debug("adding %s and %s",

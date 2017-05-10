@@ -98,9 +98,9 @@ class HttpBasicEndpointAuthTestCase(TestCase):
     def testTestWebserver(self):
         server = self.TestWebServer(self.Always200Handler)
         host, port = server.start()
-        assert host == '127.0.0.1'
-        assert port > 0 and port < pow(2,16)
-        assert server.getUrl() == 'http://127.0.0.1:%d/' % port
+        self.assertEqual(host, '127.0.0.1')
+        self.assertTrue(port > 0 and port < pow(2,16))
+        self.assertEqual(server.getUrl(), 'http://127.0.0.1:%d/' % port)
         try:
             urllib2.urlopen(server.getUrl())
             ok_(False, "We expected an error fetching this url.")
@@ -113,7 +113,7 @@ class HttpBasicEndpointAuthTestCase(TestCase):
         try:
             urllib2.urlopen(request)
         except urllib2.HTTPError as e:
-            assert False # We should not have got an error
+            raise  # We should not have got an error
         server.stop()
 
     def testAllowOnSuccess(self):
@@ -174,7 +174,7 @@ class HttpBasicEndpointAuthTestCase(TestCase):
         auth = HttpBasicEndpointAuth(endpoint=server.getUrl())
         result = auth.authenticate(request)
         server.stop()
-        assert result is None
+        self.assertIsNone(result)
 
     def testCanHandlePreviousUser(self):
         username = 'testuser'
@@ -195,6 +195,6 @@ class HttpBasicEndpointAuthTestCase(TestCase):
         self._checkResult(auth.authenticate(request),username)
 
     def _checkResult(self, result, username):
-        assert not isinstance(result, dict)
-        assert isinstance(result, User)
+        self.assertFalse(isinstance(result, dict))
+        self.assertTrue(isinstance(result, User))
         eq_(result.username, username)

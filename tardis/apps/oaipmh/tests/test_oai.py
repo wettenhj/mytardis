@@ -58,9 +58,9 @@ class EndpointTestCase(TestCase):
         # Check the response content is good
         xml = etree.fromstring(response.content)
         ns = {'oai': 'http://www.openarchives.org/OAI/2.0/'}
-        assert xml.xpath('/oai:OAI-PMH', namespaces=ns)
-        assert not xml.xpath('oai:error', namespaces=ns)
-        assert xml.xpath('oai:Identify', namespaces=ns)
+        self.assertTrue(xml.xpath('/oai:OAI-PMH', namespaces=ns))
+        self.assertTrue(not xml.xpath('oai:error', namespaces=ns))
+        self.assertTrue(xml.xpath('oai:Identify', namespaces=ns))
 
     def testGetRecord(self):
         ns = self.ns
@@ -77,9 +77,10 @@ class EndpointTestCase(TestCase):
         # Check the response content is good
         xml = etree.fromstring(response.content)
         print response.content
-        assert xml.xpath('/o:OAI-PMH', namespaces=ns)
-        assert not xml.xpath('o:error', namespaces=ns)
-        assert xml.xpath('/o:OAI-PMH/o:GetRecord/o:record', namespaces=ns)
+        self.assertTrue(xml.xpath('/o:OAI-PMH', namespaces=ns))
+        self.assertTrue(not xml.xpath('o:error', namespaces=ns))
+        self.assertTrue(
+            xml.xpath('/o:OAI-PMH/o:GetRecord/o:record', namespaces=ns))
         header, metadata = xml.xpath('/o:OAI-PMH/o:GetRecord/o:record/o:*',
                                      namespaces=ns)[0:2]
         expect(header.xpath('o:identifier/text()',namespaces=ns)[0]) \
@@ -212,13 +213,14 @@ class EndpointTestCase(TestCase):
         ns = {'r': 'http://ands.org.au/standards/rif-cs/registryObjects',
               'o': 'http://www.openarchives.org/OAI/2.0/'}
         print response.content
-        assert xml.xpath('/o:OAI-PMH', namespaces=ns)
-        assert not xml.xpath('o:error', namespaces=ns)
+        self.assertTrue(xml.xpath('/o:OAI-PMH', namespaces=ns))
+        self.assertTrue(not xml.xpath('o:error', namespaces=ns))
         idents = xml.xpath('/o:OAI-PMH/o:ListIdentifiers/o:header/o:identifier',
                            namespaces=ns)
-        assert len(idents) == 2
-        assert 'experiment/%d' % experiment.id in [i.text for i in idents]
-        assert 'user/%d' % user.id in [i.text for i in idents]
+        self.assertEqual(len(idents), 2)
+        self.assertIn('experiment/%d' % experiment.id,
+                      [i.text for i in idents])
+        self.assertIn('user/%d' % user.id, [i.text for i in idents])
 
     def testListMetadataFormats(self):
         ns = self.ns
@@ -234,14 +236,14 @@ class EndpointTestCase(TestCase):
         # Check the response content is good
         xml = etree.fromstring(response.content)
         print response.content
-        assert xml.xpath('/o:OAI-PMH', namespaces=ns)
-        assert not xml.xpath('o:error', namespaces=ns)
+        self.assertTrue(xml.xpath('/o:OAI-PMH', namespaces=ns))
+        self.assertFalse(xml.xpath('o:error', namespaces=ns))
         formats = xml.xpath('/o:OAI-PMH/o:ListMetadataFormats' +
                             '/o:metadataFormat/o:metadataPrefix',
                             namespaces=ns)
-        assert len(formats) == 2
-        assert formats[0].text == 'oai_dc'
-        assert formats[1].text == 'rif'
+        self.assertEqual(len(formats), 2)
+        self.assertEqual(formats[0].text, 'oai_dc')
+        self.assertEqual(formats[1].text, 'rif')
         # With Identifier
         args = {
             'verb': 'ListMetadataFormats',
@@ -254,14 +256,14 @@ class EndpointTestCase(TestCase):
         # Check the response content is good
         xml = etree.fromstring(response.content)
         print response.content
-        assert xml.xpath('/o:OAI-PMH', namespaces=ns)
-        assert not xml.xpath('o:error', namespaces=ns)
+        self.assertTrue(xml.xpath('/o:OAI-PMH', namespaces=ns))
+        self.assertFalse(xml.xpath('o:error', namespaces=ns))
         formats = xml.xpath('/o:OAI-PMH/o:ListMetadataFormats' +
                             '/o:metadataFormat/o:metadataPrefix',
                             namespaces=ns)
-        assert len(formats) == 2
-        assert formats[0].text == 'oai_dc'
-        assert formats[1].text == 'rif'
+        self.assertEqual(len(formats), 2)
+        self.assertEqual(formats[0].text, 'oai_dc')
+        self.assertEqual(formats[1].text, 'rif')
 
 
     def testListRecords(self):
