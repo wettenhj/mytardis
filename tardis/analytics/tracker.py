@@ -43,3 +43,5 @@ class IteratorTracker(object):
             self.tracker_data['label'] = self.tracker_data.get(
                 'label', '') + '-aborted'
         track_download(**self.tracker_data)
+
+    __next__ = next  # Python 3 compatibility
