@@ -280,28 +280,29 @@ class EndpointTestCase(TestCase):
         # Check the response content is good
         xml = etree.fromstring(response.content)
         print response.content
-        assert xml.xpath('/o:OAI-PMH', namespaces=ns)
-        assert not xml.xpath('o:error', namespaces=ns)
+        self.assertTrue(xml.xpath('/o:OAI-PMH', namespaces=ns))
+        self.assertFalse(xml.xpath('o:error', namespaces=ns))
         idents = xml.xpath('/o:OAI-PMH/o:ListRecords'+
                            '/o:record/o:header/o:identifier',
                            namespaces=ns)
-        assert len(idents) == 2
-        assert 'experiment/%d' % experiment.id in [i.text for i in idents]
-        assert 'user/%d' % user.id in [i.text for i in idents]
+        self.assertEqual(len(idents), 2)
+        self.assertIn('experiment/%d' % experiment.id,
+                      [i.text for i in idents])
+        self.assertIn('user/%d' % user.id, [i.text for i in idents])
         metadata_xpath = '/o:OAI-PMH/o:ListRecords/o:record/o:metadata'
         metadata = xml.xpath(metadata_xpath, namespaces=ns)
-        assert len(metadata) == 2
+        self.assertEqual(len(metadata), 2)
         collectionObject = xml.xpath(metadata_xpath +
                                      '/r:registryObjects/r:registryObject' +
                                      '[r:collection]',
                                      namespaces=ns)
-        assert len(collectionObject) == 1
+        self.assertEqual(len(collectionObject), 1)
         self._check_experiment_regobj(experiment, collectionObject[0])
         partyObject = xml.xpath(metadata_xpath +
                                 '/r:registryObjects/r:registryObject' +
                                 '[r:party]',
                                 namespaces=ns)
-        assert len(partyObject) == 1
+        self.assertEqual(len(partyObject), 1)
         self._check_user_regobj(user, partyObject[0])
 
     def _client_get(self, url):

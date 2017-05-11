@@ -13,7 +13,7 @@ from tardis.tardis_portal.ParameterSetManager import ParameterSetManager
 
 @matcher
 def to_match(self, regex):
-    assert re.search(regex, self.value)
+    self.assertTrue(re.search(regex, self.value))
 
 
 def _create_user_and_login(username='testuser', password='testpass'):
