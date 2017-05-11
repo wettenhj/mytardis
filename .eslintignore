@@ -1,0 +1,13 @@
+tardis/tardis_portal/static/angular/*.js
+tardis/tardis_portal/static/backbone-forms/*.js
+tardis/tardis_portal/static/js/backbone-models.js
+tardis/tardis_portal/static/bootstrap/js/*.js
+tardis/tardis_portal/static/clipboard/clipboard.min.js
+tardis/tardis_portal/static/js/lib/*.js
+tardis/tardis_portal/static/js/lib/jstree/*.js
+tardis/tardis_portal/static/js/lib/uploadify/*.js
+tardis/tardis_portal/static/user_guide/_static/*.js
+tardis/tardis_portal/static/user_guide/searchindex.js
+tardis/apps/push_to/static/push-to/angular-resource.min.js
+tardis/apps/push_to/static/push-to/bootstrap/js/*.js
+tardis/apps/push_to/static/push-to/typeahead.bundle.js
